@@ -26,6 +26,30 @@ public class GameXO {
             System.out.println();
         }
     }
+    public static void checkPlayerTurn(char player) {
+        if (player == 'X') {
+            System.out.printf("%-2s%-2s" ," ", "---- It's X turn ----");
+            System.out.println();
+        } else {
+            System.out.printf("%-2s%-2s" ," ", "---- It's O turn ----");
+            System.out.println();
+        }
+    }
+    public static char currentPlayer(boolean checkPlayer) {
+        if (checkPlayer == true) {
+            return 'X';
+        } else {
+            return 'O';
+        }
+    }
+    public static boolean switchPlayer(char player){
+        if(player == 'X'){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
 
     //main
     public static void main(String[] args) {
@@ -47,6 +71,30 @@ public class GameXO {
 
         //show welcome text and set up blank board
         setUpBoard(board);
-        printBoard(board);
+        while (true) {
+            //check board is full or not
+            if (checkBoardFull(board).equals("full")) {
+                //board are full
+                printBoard(board);
+                System.out.printf("%-2s%-2s" ," ", "---- It's a Draw ----");
+                System.out.println();
+                break;
+            }else{
+                //board not full
+                //config player (start with X)
+                player = currentPlayer(switchPlayer);
+
+                //print board
+                printBoard(board);
+
+                //check player turn
+                checkPlayerTurn(player);
+
+                //input row and column
+                System.out.print("input row and column : ");
+                position1 = kb.nextInt();
+                position2 = kb.nextInt();
+            }
+        }
     }
 }
