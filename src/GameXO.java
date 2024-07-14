@@ -49,6 +49,9 @@ public class GameXO {
             return true;
         }
     }
+    public static void addMovePlayer(char[][] board, int position1, int position2, char player){
+        board[position1 - 1][position2 - 1] = player;
+    }
     public static String checkBoardFull(char[][] board) {
         int row, col;
         for (row = 0; row < board.length; row++) {
@@ -59,6 +62,18 @@ public class GameXO {
             }
         }
         return "full";
+    }
+    public static boolean checkPositionOutOfBounds(char[][] board, int position1, int position2){
+        if(position1 > board.length || position2 > board.length || position1 < 1 || position2 < 1){
+            return true;
+        }
+        return false;
+    }
+    public static boolean checkExitPosition(char[][] board, int position1, int position2){
+        if(board[position1 - 1][position2 - 1] != ('-')){
+            return true;
+        }
+        return false;
     }
     public static boolean checkRowWinner(char[][] board, char player) {
         int col;
@@ -107,6 +122,7 @@ public class GameXO {
 
         //show welcome text and set up blank board
         setUpBoard(board);
+
         while (true) {
             //check board is full or not
             if (checkBoardFull(board).equals("full")) {
@@ -132,23 +148,24 @@ public class GameXO {
                 position2 = kb.nextInt();
             }
 
-            if (position1 > board.length || position2 > board.length || position1 < 1 || position2 < 1) {
+            if (checkPositionOutOfBounds(board, position1, position2)) {
                 //index out of bound
                 System.out.println("Your input is out of bounds, please try again.");
                 continue;
-            } else if (board[position1 - 1][position2 - 1] != ('-')) {
+            } else if (checkExitPosition(board, position1, position2)) {
                 //position is already exit
                 System.out.println("this position is already exist, please try again.");
                 continue;
             } else {
-                //insert player to board
-                board[position1 - 1][position2 - 1] = player;
+                //add player to board
+                addMovePlayer(board, position1, position2, player);
 
                 /*check player are win or not*/
                 //if player have win program will show board, show winner and end game
                 if(checkRowWinner(board, player)){
                     printBoard(board);
                     System.out.println("-- " + player + " wins with a row win --");
+                    break;
                 }else if (checkColWinner(board, player)) {
                     printBoard(board);
                     System.out.println("-- " + player + " wins with a column win --");
